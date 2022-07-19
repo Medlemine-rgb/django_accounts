@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 '''je utilise One-to-One field pour concat : User + profile (les autre information de user ) 
 
 '''
@@ -24,3 +24,13 @@ class Profile(models.Model):
     #ob
     def __str__(self) -> str:
         return str(self.user)
+@receiver(post_save, sender = User)
+def create_user_profile(sender,instance,created,**kwargs):
+    # sender : qui envoie un signale 
+    # instance de nouvelle user 
+    # created : return user created or not 
+    # ** kwargs : les information de user created
+    if created:
+        Profile.objects.create(
+            user = instance
+        )
