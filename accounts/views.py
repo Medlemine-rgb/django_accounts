@@ -31,7 +31,7 @@ def profile_edit(request):
 
     if request.method == 'POST':
         userform = UserForm(request.POST,instance=request.user)
-        profile_form = ProfileForm(request.POST, instance=profile)
+        profile_form = ProfileForm(request.POST,request.FILES, instance=profile)
         if userform.is_valid() and profile_form.is_valid():
             userform.save()
             myform = profile_form.save(commit=False)
